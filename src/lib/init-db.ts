@@ -2,6 +2,11 @@ import { supabase } from './supabase';
 
 export async function initDatabase() {
   try {
+    if (!supabase) {
+      console.error('Supabase client not initialized');
+      return false;
+    }
+
     // 创建influencers表
     const { error: influencersError } = await supabase.rpc('execute_sql', {
       sql: `
