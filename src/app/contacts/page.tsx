@@ -34,6 +34,12 @@ const ContactsPage = () => {
   // Fetch influencers from Supabase
   useEffect(() => {
     const fetchInfluencers = async () => {
+      if (!supabase) {
+        console.error('Supabase client not initialized');
+        setLoading(false);
+        return;
+      }
+
       const { data, error } = await supabase
         .from('influencers')
         .select('*')
@@ -51,6 +57,11 @@ const ContactsPage = () => {
     };
 
     const fetchTemplates = async () => {
+      if (!supabase) {
+        console.error('Supabase client not initialized');
+        return;
+      }
+
       const { data, error } = await supabase
         .from('email_templates')
         .select('*');
@@ -72,6 +83,11 @@ const ContactsPage = () => {
   const sleep = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
 
   const handleStartSending = async () => {
+    if (!supabase) {
+      console.error('Supabase client not initialized');
+      return;
+    }
+
     for (const contact of contacts) {
       // Update status to Sending... in UI
       setContacts(prev => 

@@ -45,6 +45,12 @@ const TemplatesPage = () => {
   // Fetch templates from Supabase
   useEffect(() => {
     const fetchTemplates = async () => {
+      if (!supabase) {
+        console.error('Supabase client not initialized');
+        setLoading(false);
+        return;
+      }
+
       const { data, error } = await supabase
         .from('email_templates')
         .select('*')
@@ -73,6 +79,11 @@ const TemplatesPage = () => {
 
   const handleSaveTemplate = async () => {
     try {
+      if (!supabase) {
+        toastError('Supabase client not initialized. Please check your environment variables.');
+        return;
+      }
+
       if (currentTemplate.id) {
         // Update existing template
         const { error } = await supabase
@@ -199,6 +210,11 @@ const TemplatesPage = () => {
 
   const handleDeleteTemplate = async (id: string) => {
     try {
+      if (!supabase) {
+        toastError('Supabase client not initialized. Please check your environment variables.');
+        return;
+      }
+
       const { error } = await supabase
         .from('email_templates')
         .delete()
